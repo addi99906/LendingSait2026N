@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Елена Волкова - Писатель</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            background: #f9f5f0;
+            color: #3e3e3e;
+            line-height: 1.9;
+        }
+        
+        .hero {
+            min-height: 90vh;
+            background: linear-gradient(rgba(245,235,220,0.95), rgba(245,235,220,0.95)),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="10" y="50" font-size="20" fill="%23d4c4a8" opacity="0.3">📖</text></svg>');
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 3px double #c5b394;
+        }
+        
+        .book-cover {
+            width: 300px;
+            height: 450px;
+            margin: 0 auto 40px;
+            background: linear-gradient(135deg, #8b7355 0%, #6b5744 100%);
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 
+                        inset 0 0 0 2px rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .book-cover span {
+            position: relative;
+            z-index: 1;
+            color: #f5deb3;
+            font-size: 6em;
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            color: #5a4a3a;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+        
+        .hero p {
+            font-size: 1.4em;
+            color: #8b7355;
+            font-style: italic;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        section {
+            padding: 90px 0;
+            border-bottom: 1px solid #e8dcc8;
+        }
+        
+        section:last-of-type {
+            border-bottom: none;
+        }
+        
+        h2 {
+            font-size: 2.8em;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #5a4a3a;
+            font-weight: 300;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '❦';
+            display: block;
+            margin-top: 20px;
+            color: #c5b394;
+            font-size: 0.6em;
+        }
+        
+        .bio-content {
+            font-size: 1.2em;
+            text-align: justify;
+            color: #4a4a4a;
+            line-height: 2.1;
+        }
+        
+        .bio-content p {
+            margin-bottom: 25px;
+            text-indent: 2em;
+        }
+        
+        .bio-content p:first-child::first-letter {
+            font-size: 4em;
+            float: left;
+            line-height: 0.8;
+            margin: 10px 10px 0 0;
+            color: #8b7355;
+        }
+        
+        .books-list {
+            display: grid;
+            gap: 40px;
+        }
+        
+        .book-item {
+            background: white;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid #c5b394;
+            transition: all 0.3s;
+        }
+        
+        .book-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .book-item h3 {
+            font-size: 1.8em;
+            color: #5a4a3a;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+        
+        .book-meta {
+            color: #999;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .book-item p {
+            color: #666;
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+        
+        .news-list {
+            display: grid;
+            gap: 35px;
+        }
+        
+        .news-item {
+            padding: 30px 0;
+            border-bottom: 1px dashed #e0d5c5;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-date {
+            color: #8b7355;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            font-family: 'Segoe UI', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        .news-item h3 {
+            font-size: 1.5em;
+            color: #5a4a3a;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+        
+        .news-item p {
+            color: #666;
+            font-size: 1.05em;
+        }
+        
+        .contact-section {
+            background: linear-gradient(135deg, #f5ebe0 0%, #e8d5c4 100%);
+        }
+        
+        .contact-info {
+            text-align: center;
+            font-size: 1.2em;
+            color: #5a4a3a;
+            line-height: 2.2;
+        }
+        
+        .contact-info p {
+            margin-bottom: 15px;
+        }
+        
+        .contact-info a {
+            color: #8b7355;
+            text-decoration: none;
+            border-bottom: 1px solid #c5b394;
+            transition: all 0.3s;
+        }
+        
+        .contact-info a:hover {
+            color: #5a4a3a;
+            border-bottom-color: #5a4a3a;
+        }
+        
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 2em;
+        }
+        
+        .social-links a {
+            border: none;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        
+        .social-links a:hover {
+            opacity: 1;
+        }
+        
+        footer {
+            background: #5a4a3a;
+            color: #c5b394;
+            text-align: center;
+            padding: 35px 0;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.95em;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            .book-cover { width: 220px; height: 330px; }
+            .bio-content { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="container">
+            <div class="book-cover">
+                <span>📚</span>
+            </div>
+            <h1>Елена Волкова</h1>
+            <p>Писатель, автор исторических романов</p>
+        </div>
+    </div>
+
+    <section id="bio">
+        <div class="container">
+            <h2>Биография</h2>
+            <div class="bio-content">
+                <p>Елена Волкова родилась в небольшом городке на берегу Волги, где история оживает в каждом камне старинных зданий. С детства она была очарована рассказами бабушки о прошлом, о людях, которые жили столетия назад, любили, страдали и мечтали так же, как мы сегодня.</p>
+                
+                <p>После окончания исторического факультета МГУ Елена работала в архивах, изучая документы и письма давно ушедших эпох. Именно там родилась идея первого романа — дать голос тем, чьи истории были забыты временем.</p>
+                
+                <p>Сегодня Елена — автор четырёх исторических романов, переведённых на восемь языков. Её книги — это не просто исторические хроники, это живые истории о человеческих судьбах, сплетённых с событиями прошлого.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="books">
+        <div class="container">
+            <h2>Книги</h2>
+            <div class="books-list">
+                <div class="book-item">
+                    <h3>Последняя весна Петербурга</h3>
+                    <p class="book-meta">Исторический роман • 2024</p>
+                    <p>История любви на фоне революционного Петрограда 1917 года. Судьбы двух людей из разных миров переплетаются в водовороте исторических событий.</p>
+                </div>
+                
+                <div class="book-item">
+                    <h3>Письма из Серебряного века</h3>
+                    <p class="book-meta">Исторический роман • 2022</p>
+                    <p>Захватывающая сага о семье художников начала XX века, их творчестве, страстях и выборе между искусством и жизнью.</p>
+                </div>
+                
+                <div class="book-item">
+                    <h3>Тени Московского Кремля</h3>
+                    <p class="book-meta">Исторический роман • 2020</p>
+                    <p>Интриги и тайны эпохи Ивана Грозного. Детективная линия переплетается с исторической драмой, создавая незабываемое повествование.</p>
+                </div>
+                
+                <div class="book-item">
+                    <h3>Екатерининский сад</h3>
+                    <p class="book-meta">Исторический роман • 2018</p>
+                    <p>Дебютный роман, рассказывающий о жизни при дворе Екатерины II. История о придворных интригах, запретной любви и цене власти.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="news">
+        <div class="container">
+            <h2>Новости и события</h2>
+            <div class="news-list">
+                <div class="news-item">
+                    <p class="news-date">12 января 2026</p>
+                    <h3>Презентация новой книги</h3>
+                    <p>Рада сообщить, что 25 января состоится презентация моей новой книги "Последняя весна Петербурга" в книжном магазине "Москва". Начало в 18:00. Приглашаю всех желающих!</p>
+                </div>
+                
+                <div class="news-item">
+                    <p class="news-date">28 декабря 2025</p>
+                    <h3>Награда "Лучшая историческая проза"</h3>
+                    <p>Невероятная честь — роман "Письма из Серебряного века" получил премию "Большая книга" в номинации "Лучшая историческая проза 2025". Благодарю всех читателей за поддержку!</p>
+                </div>
+                
+                <div class="news-item">
+                    <p class="news-date">15 ноября 2025</p>
+                    <h3>Работа над новым романом</h3>
+                    <p>Погружена в исследования для нового романа о декабристах. Провела две недели в архивах Санкт-Петербурга. Невероятно волнующий материал!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Контакты</h2>
+            <div class="contact-info">
+                <p>Для связи по вопросам сотрудничества и интервью:</p>
+                <p><a href="mailto:elena.volkova@example.com">elena.volkova@example.com</a></p>
+                <p>Издательство: <a href="#">"Азбука-Аттикус"</a></p>
+                
+                <div class="social-links">
+                    <a href="#">📘</a>
+                    <a href="#">📸</a>
+                    <a href="#">✍️</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Елена Волкова. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

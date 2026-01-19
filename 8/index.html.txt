@@ -1,0 +1,545 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RightsChain — Токенизация интеллектуальной собственности</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --color-primary: #8b5cf6;
+            --color-primary-dark: #7c3aed;
+            --color-accent: #06b6d4;
+            --color-background: #0c0a1d;
+            --color-surface: #1a1734;
+            --font-primary: 'Inter', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            background: var(--color-background);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 60px rgba(139, 92, 246, 0.5);
+        }
+        
+        .btn-ghost {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 38px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .btn-ghost:hover {
+            border-color: var(--color-primary);
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .card-3d {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-8px) rotateY(2deg);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .animate-scroll {
+            animation: scroll 30s linear infinite;
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            max-height: 600px;
+        }
+        
+        .nft-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .nft-card:hover {
+            border-color: rgba(139, 92, 246, 0.8);
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
+        }
+        
+        .nft-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+        
+        .nft-card:hover::before {
+            right: -200%;
+        }
+        
+        .blockchain-grid {
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-scroll 20s linear infinite;
+        }
+        
+        @keyframes grid-scroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+        
+        .tokenize-demo {
+            position: relative;
+            background: rgba(139, 92, 246, 0.05);
+            border: 2px dashed rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        .tokenize-demo:hover {
+            border-color: rgba(139, 92, 246, 0.6);
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .pulse-ring {
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="glass fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center">
+                        <i data-lucide="fingerprint" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">RightsChain</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#platform" class="text-gray-300 hover:text-white transition">Платформа</a>
+                    <a href="#marketplace" class="text-gray-300 hover:text-white transition">Маркетплейс</a>
+                    <a href="#creators" class="text-gray-300 hover:text-white transition">Для авторов</a>
+                    <a href="#contact" class="btn-primary inline-block">Начать</a>
+                </div>
+                
+                <button class="md:hidden text-white">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 px-6 blockchain-grid">
+        <div class="container mx-auto text-center relative z-10">
+            <div class="max-w-5xl mx-auto">
+                <div class="inline-block glass px-6 py-2 rounded-full mb-6 pulse-ring">
+                    <span class="gradient-text font-semibold">🔗 Blockchain • Web3 • IP Rights</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Токенизируйте права<br/>
+                    на <span class="gradient-text">вашу интеллектуальную собственность</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto">
+                    Превращайте патенты, товарные знаки, авторские права и лицензии в торгуемые микро-NFT. Получайте роялти автоматически через смарт-контракты
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                    <button class="btn-primary">Токенизировать права</button>
+                    <button class="btn-ghost">Посмотреть маркетплейс</button>
+                </div>
+                
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">$12.4M</div>
+                        <div class="text-gray-400 text-sm">Объём торгов</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">3,800+</div>
+                        <div class="text-gray-400 text-sm">Токенизированных IP</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">94</div>
+                        <div class="text-gray-400 text-sm">Страны</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">0.5%</div>
+                        <div class="text-gray-400 text-sm">Комиссия</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="py-16 px-6">
+        <div class="container mx-auto">
+            <p class="text-center text-gray-400 mb-8 text-sm uppercase tracking-wider">Интеграции и партнёры</p>
+            <div class="flex space-x-12 animate-scroll">
+                <div class="text-2xl font-bold opacity-50">Ethereum</div>
+                <div class="text-2xl font-bold opacity-50">Polygon</div>
+                <div class="text-2xl font-bold opacity-50">IPFS</div>
+                <div class="text-2xl font-bold opacity-50">Arweave</div>
+                <div class="text-2xl font-bold opacity-50">MetaMask</div>
+                <div class="text-2xl font-bold opacity-50">OpenSea</div>
+                <div class="text-2xl font-bold opacity-50">Ethereum</div>
+                <div class="text-2xl font-bold opacity-50">Polygon</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="platform" class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Как работает <span class="gradient-text">платформа</span></h2>
+                <p class="text-xl text-gray-400">Три простых шага до первых роялти</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Загрузите IP-актив</h3>
+                    <p class="text-gray-400 mb-6">Патент, товарный знак, авторское право, промышленный образец или код. Мы верифицируем подлинность через WIPO, USPTO, Роспатент</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-purple-400"></i> Автоматическая проверка</div>
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-purple-400"></i> Правовой аудит AI</div>
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-purple-400"></i> Хранение в IPFS</div>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Создайте микро-NFT</h3>
+                    <p class="text-gray-400 mb-6">Фракционализируйте права на 100-10,000 частей. Продавайте лицензии на использование или долю в роялти</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-cyan-400"></i> ERC-1155 стандарт</div>
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-cyan-400"></i> Гибкие условия</div>
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-cyan-400"></i> Gas оптимизация</div>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Получайте доход</h3>
+                    <p class="text-gray-400 mb-6">Автоматическое распределение роялти в USDC/ETH через смарт-контракты. Прозрачная аналитика использования</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-pink-400"></i> Выплаты 24/7</div>
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-pink-400"></i> Real-time tracking</div>
+                        <div class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-pink-400"></i> Tax reporting</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Попробуйте <span class="gradient-text">токенизацию</span></h2>
+                <p class="text-xl text-gray-400">Симуляция создания микро-NFT из вашего патента</p>
+            </div>
+            
+            <div class="glass rounded-3xl p-8 md:p-12">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Input Side -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-6">Параметры IP-актива</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2 text-gray-300">Тип IP</label>
+                                <select id="ipType" class="w-full px-4 py-3 rounded-xl glass border border-gray-700 focus:border-purple-500 outline-none">
+                                    <option value="patent">Патент</option>
+                                    <option value="trademark">Товарный знак</option>
+                                    <option value="copyright">Авторское право</option>
+                                    <option value="design">Промышленный образец</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold mb-2 text-gray-300">Оценочная стоимость ($)</label>
+                                <input type="number" id="assetValue" value="50000" class="w-full px-4 py-3 rounded-xl glass border border-gray-700 focus:border-purple-500 outline-none text-white" placeholder="50000">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold mb-2 text-gray-300">Количество фракций</label>
+                                <input type="range" id="fractions" min="100" max="10000" value="1000" step="100" class="w-full">
+                                <div class="text-right text-sm text-gray-400 mt-1"><span id="fractionsValue">1000</span> NFT</div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold mb-2 text-gray-300">Роялти владельцам (%)</label>
+                                <input type="range" id="royalty" min="1" max="20" value="5" step="0.5" class="w-full">
+                                <div class="text-right text-sm text-gray-400 mt-1"><span id="royaltyValue">5</span>%</div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="simulateTokenization()" class="btn-primary w-full mt-6">
+                            <i data-lucide="coins" class="w-5 h-5 inline mr-2"></i>
+                            Рассчитать токенизацию
+                        </button>
+                    </div>
+                    
+                    <!-- Output Side -->
+                    <div id="tokenResults" class="hidden">
+                        <h3 class="text-xl font-bold mb-6">Результат</h3>
+                        
+                        <div class="nft-card p-6 mb-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <div class="text-sm text-gray-400 mb-1">Цена за фракцию</div>
+                                    <div id="pricePerFraction" class="text-3xl font-bold gradient-text">-</div>
+                                </div>
+                                <div class="glass px-3 py-1 rounded-lg text-sm">
+                                    <span id="blockchain">Polygon</span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <div class="text-sm text-gray-400">Всего фракций</div>
+                                    <div id="totalFractions" class="text-xl font-semibold">-</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-400">Роялти</div>
+                                    <div id="royaltyPercent" class="text-xl font-semibold">-</div>
+                                </div>
+                            </div>
+                            
+                            <div class="glass rounded-lg p-4">
+                                <div class="text-sm text-gray-400 mb-2">Прогноз годового дохода</div>
+                                <div id="annualIncome" class="text-2xl font-bold text-green-400">-</div>
+                                <div class="text-xs text-gray-500 mt-1">При средней лицензионной активности</div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass rounded-xl p-4 border-l-4 border-purple-500">
+                            <div class="flex items-start gap-3">
+                                <i data-lucide="info" class="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5"></i>
+                                <div class="text-sm text-gray-300">
+                                    <strong class="text-purple-400">Gas fee:</strong> ~$2.50 на Polygon. Минтинг займёт 30 секунд. Владельцы автоматически получают роялти в USDC
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NFT Marketplace Preview -->
+    <section id="marketplace" class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Trending <span class="gradient-text">IP NFTs</span></h2>
+                <p class="text-xl text-gray-400">Популярные токенизированные права на маркетплейсе</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- NFT Card 1 -->
+                <div class="nft-card overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+                        <i data-lucide="cpu" class="w-20 h-20 text-white opacity-80"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-sm glass px-3 py-1 rounded-full">Patent</div>
+                            <div class="flex items-center gap-1 text-sm text-gray-400">
+                                <i data-lucide="users" class="w-4 h-4"></i>
+                                <span>847</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">AI Image Recognition Algorithm</h3>
+                        <p class="text-sm text-gray-400 mb-4">US Patent #10,234,567 • 2,500 fractions</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-xs text-gray-400">Floor price</div>
+                                <div class="font-bold text-lg">$24.50</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-400">Royalty</div>
+                                <div class="font-bold text-lg text-green-400">7%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- NFT Card 2 -->
+                <div class="nft-card overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center">
+                        <i data-lucide="music" class="w-20 h-20 text-white opacity-80"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-sm glass px-3 py-1 rounded-full">Copyright</div>
+                            <div class="flex items-center gap-1 text-sm text-gray-400">
+                                <i data-lucide="users" class="w-4 h-4"></i>
+                                <span>1,203</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Electronic Music Album</h3>
+                        <p class="text-sm text-gray-400 mb-4">Master rights • 5,000 fractions</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-xs text-gray-400">Floor price</div>
+                                <div class="font-bold text-lg">$12.00</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-400">Royalty</div>
+                                <div class="font-bold text-lg text-green-400">10%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- NFT Card 3 -->
+                <div class="nft-card overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-orange-600 to-red-600 flex items-center justify-center">
+                        <i data-lucide="palette" class="w-20 h-20 text-white opacity-80"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-sm glass px-3 py-1 rounded-full">Design</div>
+                            <div class="flex items-center gap-1 text-sm text-gray-400">
+                                <i data-lucide="users" class="w-4 h-4"></i>
+                                <span>532</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Ergonomic Chair Design</h3>
+                        <p class="text-sm text-gray-400 mb-4">EU Design #008765432 • 1,000 fractions</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-xs text-gray-400">Floor price</div>
+                                <div class="font-bold text-lg">$35.80</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-400">Royalty</div>
+                                <div class="font-bold text-lg text-green-400">5%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Истории <span class="gradient-text">успеха</span></h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Александр Новиков</div>
+                            <div class="text-sm text-gray-400">Inventor, Tech Startup</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-

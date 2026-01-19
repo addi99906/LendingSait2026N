@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust Stories - Блог о путешествиях</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: #fafafa;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%2387CEEB" width="1200" height="600"/><path fill="%23F4A460" d="M0 400 Q300 350 600 400 T1200 400 L1200 600 L0 600Z"/><circle fill="%23FFD700" cx="900" cy="150" r="80"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero-content h1 {
+            font-size: 4em;
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.3em;
+            font-style: italic;
+            opacity: 0.95;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-20px); }
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        section {
+            padding: 100px 0;
+        }
+        
+        h2 {
+            font-size: 2.8em;
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 300;
+            color: #2c3e50;
+            position: relative;
+        }
+        
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .post-card:nth-child(2) .post-image {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .post-card:nth-child(3) .post-image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .post-image::before {
+            content: '📸';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            opacity: 0.6;
+        }
+        
+        .post-content {
+            padding: 30px;
+        }
+        
+        .post-meta {
+            color: #95a5a6;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .post-content h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 400;
+        }
+        
+        .post-content p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .read-more {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .read-more:hover {
+            color: #2980b9;
+            padding-left: 5px;
+        }
+        
+        .about-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .about-section h2 {
+            color: white;
+        }
+        
+        .about-content {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.2em;
+            line-height: 2;
+        }
+        
+        .subscribe-section {
+            background: #f8f9fa;
+        }
+        
+        .subscribe-box {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .subscribe-box h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 300;
+        }
+        
+        .subscribe-box p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .subscribe-form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .subscribe-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 18px 25px;
+            border: 2px solid #ecf0f1;
+            border-radius: 50px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .subscribe-form input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 4px rgba(52,152,219,0.1);
+        }
+        
+        .subscribe-form button {
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .subscribe-form button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            .posts-grid { grid-template-columns: 1fr; }
+            .subscribe-form { flex-direction: column; }
+            .subscribe-form input { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <h1>WANDERLUST STORIES</h1>
+            <p>Истории о путешествиях, которые вдохновляют</p>
+        </div>
+        <div class="scroll-indicator">↓</div>
+    </div>
+
+    <section id="posts">
+        <div class="container">
+            <h2>Последние посты</h2>
+            <div class="posts-grid">
+                <article class="post-card">
+                    <div class="post-image"></div>
+                    <div class="post-content">
+                        <p class="post-meta">15 января 2026 • Азия</p>
+                        <h3>Магия Киото: Храмы и сады</h3>
+                        <p>Прогулка по древней столице Японии открыла мне мир тишины, красоты и гармонии. Каждый храм здесь — это отдельная вселенная...</p>
+                        <a href="#" class="read-more">Читать далее →</a>
+                    </div>
+                </article>
+
+                <article class="post-card">
+                    <div class="post-image"></div>
+                    <div class="post-content">
+                        <p class="post-meta">8 января 2026 • Европа</p>
+                        <h3>Зимний Прованс: Лаванда и тишина</h3>
+                        <p>Думаете, Прованс красив только летом? Зима показала мне совершенно другую сторону этого региона — спокойную и медитативную...</p>
+                        <a href="#" class="read-more">Читать далее →</a>
+                    </div>
+                </article>
+
+                <article class="post-card">
+                    <div class="post-image"></div>
+                    <div class="post-content">
+                        <p class="post-meta">28 декабря 2025 • Южная Америка</p>
+                        <h3>Патагония: На краю света</h3>
+                        <p>Ледники, бескрайние степи и ветер, который сбивает с ног. Патагония — это место, где понимаешь, насколько мал человек...</p>
+                        <a href="#" class="read-more">Читать далее →</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2>Обо мне</h2>
+            <div class="about-content">
+                <p>Привет! Меня зовут Мария, и я путешествую уже более 10 лет. За это время я посетила 52 страны на 5 континентах. В этом блоге я делюсь своими историями, советами и вдохновением для тех, кто хочет открыть для себя мир.</p>
+                <p>Для меня путешествие — это не только новые места, но и встречи с людьми, погружение в культуру и поиск себя. Присоединяйтесь!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="subscribe" class="subscribe-section">
+        <div class="container">
+            <div class="subscribe-box">
+                <h3>Подпишитесь на рассылку</h3>
+                <p>Получайте новые истории о путешествиях прямо на почту. Без спама, только вдохновение.</p>
+                <form class="subscribe-form">
+                    <input type="email" placeholder="Ваш email" required>
+                    <button type="submit">Подписаться</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Wanderlust Stories. Создано с любовью к путешествиям.</p>
+        </div>
+    </footer>
+</body>
+</html>

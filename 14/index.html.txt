@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinguaSpace - Школа иностранных языков</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background: #fff;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 20px;
+        }
+        
+        .hero::before {
+            content: '🌍 Hello 你好 Hola Bonjour Ciao こんにちは مرحبا';
+            position: absolute;
+            top: 20%;
+            left: -20%;
+            font-size: 3em;
+            opacity: 0.1;
+            white-space: nowrap;
+            animation: scroll 30s linear infinite;
+        }
+        
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(100%); }
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 4.5em;
+            font-weight: 900;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .hero p {
+            font-size: 1.8em;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 18px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 3px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-5px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        section {
+            padding: 100px 0;
+        }
+        
+        h2 {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 70px;
+            font-weight: 800;
+            color: #2d2d2d;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+        }
+        
+        .course-card {
+            background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
+        
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        
+        .course-icon {
+            font-size: 4em;
+            margin-bottom: 25px;
+        }
+        
+        .course-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #2d2d2d;
+            font-weight: 700;
+        }
+        
+        .course-card p {
+            color: #666;
+            font-size: 1.05em;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .course-features {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .course-features li {
+            padding: 8px 0;
+            color: #555;
+            font-size: 0.95em;
+        }
+        
+        .course-features li::before {
+            content: '✓';
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .course-price {
+            font-size: 2em;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .teachers-section {
+            background: linear-gradient(135deg, #f6f9fc 0%, #e9f2f9 100%);
+        }
+        
+        .teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .teacher-card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        
+        .teacher-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        
+        .teacher-avatar {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+        }
+        
+        .teacher-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 10px;
+            color: #2d2d2d;
+            font-weight: 700;
+        }
+        
+        .teacher-lang {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+        
+        .teacher-card p {
+            color: #666;
+            line-height: 1.7;
+            font-size: 1em;
+        }
+        
+        .testimonials-section {
+            background: white;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 6em;
+            opacity: 0.2;
+            font-family: Georgia, serif;
+        }
+        
+        .testimonial-text {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-author {
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+        
+        .testimonial-course {
+            opacity: 0.8;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        
+        .trial-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+        }
+        
+        .trial-section h2 {
+            color: white;
+        }
+        
+        .trial-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.15);
+            padding: 50px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 18px 25px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.6);
+        }
+        
+        select {
+            cursor: pointer;
+        }
+        
+        select option {
+            background: #667eea;
+            color: white;
+        }
+        
+        button {
+            width: 100%;
+            padding: 20px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        footer {
+            background: #2d2d2d;
+            color: #999;
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3em; }
+            h2 { font-size: 2.5em; }
+            .form-row { grid-template-columns: 1fr; }
+            .trial-form { padding: 35px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Заговорите на новом языке</h1>
+            <p>Современная методика. Опытные преподаватели. Результат уже через 2 месяца!</p>
+            <div class="hero-buttons">
+                <a href="#trial" class="btn btn-primary">Пробное занятие</a>
+                <a href="#courses" class="btn btn-secondary">Наши курсы</a>
+            </div>
+        </div>
+    </div>
+
+    <section id="courses">
+        <div class="container">
+            <h2>Наши курсы</h2>
+            <div class="courses-grid">
+                <div class="course-card">
+                    <div class="course-icon">🇬🇧</div>
+                    <h3>Английский язык</h3>
+                    <p>От начального до продвинутого уровня. Акцент на разговорную практику.</p>
+                    <ul class="course-features">
+                        <li>Группы до 6 человек</li>
+                        <li>2 раза в неделю по 90 минут</li>
+                        <li>Носители языка</li>
+                        <li>Подготовка к IELTS/TOEFL</li>
+                    </ul>
+                    <div class="course-price">5 500₽</div>
+                    <p style="font-size: 0.9em; color: #999;">за месяц (8 занятий)</p>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-icon">🇩🇪</div>
+                    <h3>Немецкий язык</h3>
+                    <p>Систематическое изучение грамматики и практика общения с первого урока.</p>
+                    <ul class="course-features">
+                        <li>Группы до 6 человек</li>
+                        <li>2 раза в неделю по 90 минут</li>
+                        <li>Сертифицированные педагоги</li>
+                        <li>Подготовка к Goethe-Zertifikat</li>
+                    </ul>
+                    <div class="course-price">5 000₽</div>
+                    <p style="font-size: 0.9em; color: #999;">за месяц (8 занятий)</p>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-icon">🇪🇸</div>
+                    <h3>Испанский язык</h3>
+                    <p>Погружение в культуру и язык. Коммуникативная методика обучения.</p>
+                    <ul class="course-features">
+                        <li>Группы до 6 человек</li>
+                        <li>2 раза в неделю по 90 минут</li>
+                        <li>Носители и педагоги из Испании</li>
+                        <li>Подготовка к DELE</li>
+                    </ul>
+                    <div class="course-price">5 000₽</div>
+                    <p style="font-size: 0.9em; color: #999;">за месяц (8 занятий)</p>
+                </div>
+                
+                <div class="course-card">
+                    <div class="course-icon">🇨🇳</div>
+                    <h3>Китайский язык</h3>
+                    <p>Изучение иероглифики, тональности и основ делового китайского.</p>
+                    <ul class="course-features">
+                        <li>Группы до 6 человек</li>
+                        <li>2 раза в неделю по 90 минут</li>
+                        <li>Носители из Китая</li>
+                        <li>Подготовка к HSK</li>
+                    </ul>
+                    <div class="course-price">6 000₽</div>
+                    <p style="font-size: 0.9em; color: #999;">за месяц (8 занятий)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="teachers" class="teachers-section">
+        <div class="container">
+            <h2>Преподаватели</h2>
+            <div class="teachers-grid">
+                <div class="teacher-card">
+                    <div class="teacher-avatar">👨‍🏫</div>
+                    <h3>Джон Смит</h3>
+                    <p class="teacher-lang">Английский язык</p>
+                    <p>Носитель языка из Великобритании. Опыт преподавания — 8 лет. Специализация: деловой английский и подготовка к международным экзаменам.</p>
+                </div>
+                
+                <div class="teacher-card">
+                    <div class="teacher-avatar">👩‍🏫</div>
+                    <h3>Анна Мюллер</h3>
+                    <p class="teacher-lang">Немецкий язык</p>
+                    <p>Сертифицированный педагог из Германии. 10 лет опыта. Автор собственной методики для быстрого освоения грамматики немецкого языка.</p>
+                </div>
+                
+                <div class="teacher-card">
+                    <div class="teacher-avatar">👨‍🏫</div>
+                    <h3>Карлос Гарсия</h3>
+                    <p class="teacher-lang">Испанский язык</p>
+                    <p>Носитель языка из Мадрида. Опыт преподавания — 6 лет. Фокус на разговорной практике и погружении в испанскую культуру.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <h2>Отзывы учеников</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">За 3 месяца обучения я начала свободно общаться на английском! Методика действительно работает, а атмосфера на занятиях очень дружелюбная. Спасибо команде LinguaSpace!</p>
+                    <p class="testimonial-author">Мария Петрова</p>
+                    <p class="testimonial-course">Английский язык, уровень B1</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Всегда хотел выучить немецкий, но не хватало мотивации. Здесь нашёл отличного преподавателя и группу единомышленников. Сейчас готовлюсь к переезду в Германию!</p>
+                    <p class="testimonial-author">Алексей Иванов</p>
+                    <p class="testimonial-course">Немецкий язык, уровень A2</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Испанский я учу для души, но результаты превзошли ожидания! Уже через 2 месяца смог поддержать беседу во время поездки в Барселону. Преподаватели — профессионалы!</p>
+                    <p class="testimonial-author">Дмитрий Соколов</p>
+                    <p class="testimonial-course">Испанский язык, уровень A1</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="trial" class="trial-section">
+        <div class="container">
+            <h2>Запись на пробное занятие</h2>
+            <form class="trial-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" placeholder="Иван" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="example@mail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="language">Какой язык хотите изучать?</label>
+                    <select id="language" required>
+                        <option value="">Выберите язык</option>
+                        <option value="english">Английский</option>
+                        <option value="german">Немецкий</option>
+                        <option value="spanish">Испанский</option>
+                        <option value="chinese">Китайский</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="level">Ваш уровень</label>
+                    <select id="level" required>
+                        <option value="">Выберите уровень</option>
+                        <option value="beginner">Начинающий (A1)</option>
+                        <option value="elementary">Элементарный (A2)</option>
+                        <option value="intermediate">Средний (B1-B2)</option>
+                        <option value="advanced">Продвинутый (C1-C2)</option>
+                    </select>
+                </div>
+                <button type="submit">Записаться на пробное занятие</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 LinguaSpace. Откройте мир новых возможностей с нами!</p>
+        </div>
+    </footer>
+</body>
+</html>

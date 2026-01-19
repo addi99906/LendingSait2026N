@@ -1,0 +1,501 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI — Консалтинг нового поколения</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    
+    <style>
+        /* CSS Custom Properties for Premium Theme */
+        :root {
+            --color-primary: #6366f1;
+            --color-primary-dark: #4f46e5;
+            --color-accent: #ec4899;
+            --color-background: #0a0a0f;
+            --color-surface: #1a1a2e;
+            --color-surface-light: #252538;
+            --font-primary: 'Inter', sans-serif;
+            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
+            --shadow-elevation: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            background: var(--color-background);
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Animated Gradient Border */
+        .gradient-border {
+            position: relative;
+            background: var(--color-surface);
+            border-radius: 24px;
+            padding: 2px;
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(135deg, #6366f1, #ec4899, #f59e0b);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: borderRotate 3s linear infinite;
+        }
+        
+        @keyframes borderRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-glow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 60px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-ghost {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 38px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+        
+        .btn-ghost:hover {
+            border-color: var(--color-primary);
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Card 3D Effect */
+        .card-3d {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: var(--shadow-elevation);
+        }
+        
+        /* Infinite Scroll Animation */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .animate-scroll {
+            animation: scroll 30s linear infinite;
+        }
+        
+        /* FAQ Accordion */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            max-height: 500px;
+        }
+        
+        /* Hero Background Animation */
+        .hero-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+            top: -250px;
+            right: -250px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
+            bottom: -200px;
+            left: -200px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="glass fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center">
+                        <i data-lucide="brain" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">NEXUS AI</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="text-gray-300 hover:text-white transition">Услуги</a>
+                    <a href="#cases" class="text-gray-300 hover:text-white transition">Кейсы</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-white transition">Тарифы</a>
+                    <a href="#contact" class="btn-primary inline-block">Консультация</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white" id="mobileMenuBtn">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden">
+        <div class="hero-bg"></div>
+        
+        <div class="container mx-auto text-center relative z-10">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Искусственный интеллект<br/>
+                    <span class="gradient-text">для вашего бизнеса</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                    Внедряем AI-решения, которые увеличивают прибыль на 300% и автоматизируют 80% рутинных процессов
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button class="btn-primary">Получить аудит бесплатно</button>
+                    <button class="btn-ghost">Смотреть кейсы</button>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">180+</div>
+                        <div class="text-gray-400">Проектов</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">3.2x</div>
+                        <div class="text-gray-400">Рост ROI</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">24/7</div>
+                        <div class="text-gray-400">Поддержка</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">99.9%</div>
+                        <div class="text-gray-400">Uptime SLA</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Block -->
+    <section class="py-16 px-6 overflow-hidden">
+        <div class="container mx-auto">
+            <p class="text-center text-gray-400 mb-8">Нам доверяют лидеры рынка</p>
+            <div class="flex space-x-12 animate-scroll">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b629ef5ce0f?w=200&h=80&fit=crop" alt="Partner" class="h-12 opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0">
+                <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=200&h=80&fit=crop" alt="Partner" class="h-12 opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0">
+                <img src="https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?w=200&h=80&fit=crop" alt="Partner" class="h-12 opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0">
+                <img src="https://images.unsplash.com/photo-1611162617263-4ec3f1f5e7e6?w=200&h=80&fit=crop" alt="Partner" class="h-12 opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0">
+                <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=200&h=80&fit=crop" alt="Partner" class="h-12 opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b629ef5ce0f?w=200&h=80&fit=crop" alt="Partner" class="h-12 opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="services" class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Наши <span class="gradient-text">компетенции</span></h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">Полный цикл AI-трансформации от стратегии до внедрения</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Card 1 -->
+                <div class="gradient-border card-3d">
+                    <div class="glass rounded-[22px] p-8 h-full">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6">
+                            <i data-lucide="zap" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">AI-автоматизация процессов</h3>
+                        <p class="text-gray-400 mb-6">Внедряем интеллектуальные системы для автоматизации customer support, аналитики данных и прогнозирования спроса</p>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Снижение издержек на 60%</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> ROI от 6 месяцев</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Feature Card 2 -->
+                <div class="gradient-border card-3d">
+                    <div class="glass rounded-[22px] p-8 h-full">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-red-600 flex items-center justify-center mb-6">
+                            <i data-lucide="brain-circuit" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Собственные AI-модели</h3>
+                        <p class="text-gray-400 mb-6">Разрабатываем и fine-tuning LLM под специфику вашего бизнеса с интеграцией в существующую инфраструктуру</p>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> GPT-4 / Claude 3.5 уровня</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> On-premise развертывание</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Feature Card 3 -->
+                <div class="gradient-border card-3d">
+                    <div class="glass rounded-[22px] p-8 h-full">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-6">
+                            <i data-lucide="database" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Data Science & Analytics</h3>
+                        <p class="text-gray-400 mb-6">Строим предиктивные модели и системы бизнес-аналитики на базе больших данных вашей компании</p>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Прогнозы с точностью 94%</li>
+                            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Real-time дашборды</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive AI Demo Section -->
+    <section class="py-24 px-6 relative overflow-hidden">
+        <div class="container mx-auto">
+            <div class="gradient-border max-w-4xl mx-auto">
+                <div class="glass rounded-[22px] p-8 md:p-12">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center">Попробуйте AI-ассистента прямо сейчас</h2>
+                    <p class="text-center text-gray-400 mb-8">Задайте вопрос нашему демо-ассистенту по бизнес-аналитике</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <input 
+                                type="text" 
+                                id="aiInput" 
+                                placeholder="Например: Как AI может увеличить конверсию интернет-магазина?"
+                                class="flex-1 px-6 py-4 rounded-xl glass border border-gray-700 focus:border-indigo-500 outline-none text-white"
+                            >
+                            <button onclick="simulateAI()" class="btn-primary">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="aiResponse" class="hidden glass rounded-xl p-6 border-l-4 border-indigo-500">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="font-semibold mb-2">AI-ассистент NEXUS</div>
+                                    <div id="aiText" class="text-gray-300"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                        <button onclick="quickQuestion('conversion')" class="glass p-4 rounded-lg hover:border-indigo-500 border border-transparent transition text-left">
+                            <div class="text-sm text-gray-400 mb-1">Быстрый вопрос</div>
+                            <div class="font-medium">Увеличение конверсии</div>
+                        </button>
+                        <button onclick="quickQuestion('automation')" class="glass p-4 rounded-lg hover:border-indigo-500 border border-transparent transition text-left">
+                            <div class="text-sm text-gray-400 mb-1">Быстрый вопрос</div>
+                            <div class="font-medium">Автоматизация поддержки</div>
+                        </button>
+                        <button onclick="quickQuestion('analytics')" class="glass p-4 rounded-lg hover:border-indigo-500 border border-transparent transition text-left">
+                            <div class="text-sm text-gray-400 mb-1">Быстрый вопрос</div>
+                            <div class="font-medium">Предиктивная аналитика</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof / Testimonials -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Отзывы <span class="gradient-text">клиентов</span></h2>
+                <p class="text-xl text-gray-400">Реальные результаты реальных компаний</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Client" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Алексей Морозов</div>
+                            <div class="text-sm text-gray-400">CEO, TechCorp</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-300">"За 4 месяца AI-чатбот обработал 120,000 обращений и снизил нагрузку на саппорт на 73%. ROI окупился через 3 месяца. Профессионалы своего дела!"</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="Client" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Мария Соколова</div>
+                            <div class="text-sm text-gray-400">CMO, Retail Group</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-300">"Система предиктивной аналитики спрогнозировала спрос с точностью 91% на Black Friday. Избежали дефицита и переизбытка товаров. Прибыль выросла на 2.1M₽"</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop" alt="Client" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Дмитрий Ковалев</div>
+                            <div class="text-sm text-gray-400">Founder, FinStart</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-300">"Кастомная LLM для анализа финансовых документов обрабатывает 500 страниц за 2 минуты. Юристы теперь фокусируются на стратегии, а не на рутине"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Частые <span class="gradient-text">вопросы</span></h2>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="glass rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion(0)" class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/5 transition">
+                        <span class="font-semibold text-lg">Сколько времени занимает внедрение AI-решения?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon-0"></i>
+                    </button>
+                    <div class="accordion-content px-8 pb-6">
+                        <p class="text-gray-400">В зависимости от сложности проекта — от 2 недель (базовый чатбот) до 6 месяцев (комплексная AI-платформа). Мы работаем по Agile-методологии с MVP через 3-4 недели, чтобы вы могли увидеть первые результаты быстро.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="glass rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion(1)" class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/5 transition">
+                        <span class="font-semibold text-lg">Какие гарантии результата вы даете?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon-1"></i>
+                    </button>
+                    <div class="accordion-content px-8 pb-6">
+                        <p class="text-gray-400">Работаем по модели Success Fee — часть

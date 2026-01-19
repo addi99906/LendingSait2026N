@@ -1,0 +1,534 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ольга Белова - Дизайнер интерьера</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Playfair Display', Georgia, serif;
+            background: #f8f6f3;
+            color: #3d3d3d;
+            line-height: 1.7;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #d7ccc8 0%, #bcaaa4 100%);
+            padding: 80px 0;
+            text-align: center;
+            border-bottom: 5px solid #a1887f;
+        }
+        
+        header h1 {
+            font-size: 4em;
+            color: #4e342e;
+            margin-bottom: 15px;
+            font-weight: 400;
+            letter-spacing: 3px;
+        }
+        
+        header p {
+            font-size: 1.4em;
+            color: #6d4c41;
+            font-style: italic;
+            font-family: 'Georgia', serif;
+        }
+        
+        nav {
+            background: white;
+            padding: 25px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        nav a {
+            color: #5d4037;
+            text-decoration: none;
+            padding: 12px 30px;
+            font-size: 1.05em;
+            font-family: 'Lato', sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        
+        nav a:hover {
+            color: #a1887f;
+            border-bottom-color: #a1887f;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        section {
+            padding: 100px 0;
+            border-bottom: 1px solid #e8e0db;
+        }
+        
+        section:last-of-type {
+            border-bottom: none;
+        }
+        
+        h2 {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 70px;
+            color: #4e342e;
+            font-weight: 400;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: #a1887f;
+            margin: 25px auto 0;
+        }
+        
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.2em;
+            line-height: 2;
+            text-align: center;
+            color: #5d4037;
+            font-family: 'Georgia', serif;
+        }
+        
+        .about-content p {
+            margin-bottom: 25px;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .portfolio-item {
+            aspect-ratio: 4/3;
+            background: #d7ccc8;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .portfolio-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(161,136,127,0.9), rgba(93,64,55,0.9));
+            opacity: 0.85;
+            transition: opacity 0.4s;
+        }
+        
+        .portfolio-item:hover::before {
+            opacity: 0.5;
+        }
+        
+        .portfolio-item:nth-child(1)::before { background: linear-gradient(135deg, rgba(215,204,200,0.9), rgba(161,136,127,0.9)); }
+        .portfolio-item:nth-child(2)::before { background: linear-gradient(135deg, rgba(188,170,164,0.9), rgba(141,110,99,0.9)); }
+        .portfolio-item:nth-child(3)::before { background: linear-gradient(135deg, rgba(161,136,127,0.9), rgba(109,76,65,0.9)); }
+        .portfolio-item:nth-child(4)::before { background: linear-gradient(135deg, rgba(141,110,99,0.9), rgba(93,64,55,0.9)); }
+        .portfolio-item:nth-child(5)::before { background: linear-gradient(135deg, rgba(215,204,200,0.9), rgba(109,76,65,0.9)); }
+        .portfolio-item:nth-child(6)::before { background: linear-gradient(135deg, rgba(121,85,72,0.9), rgba(78,52,46,0.9)); }
+        
+        .portfolio-item span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            z-index: 1;
+        }
+        
+        .portfolio-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            font-size: 1.2em;
+            font-family: 'Lato', sans-serif;
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 1;
+        }
+        
+        .portfolio-item:hover .portfolio-label {
+            opacity: 1;
+        }
+        
+        .services-section {
+            background: white;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .service-card {
+            text-align: center;
+            padding: 40px 30px;
+            background: #f8f6f3;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 2px solid #e8e0db;
+        }
+        
+        .service-card:hover {
+            background: white;
+            border-color: #a1887f;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .service-icon {
+            font-size: 3.5em;
+            margin-bottom: 25px;
+        }
+        
+        .service-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #4e342e;
+            font-weight: 400;
+        }
+        
+        .service-card p {
+            color: #666;
+            font-size: 1.05em;
+            line-height: 1.7;
+            font-family: 'Georgia', serif;
+        }
+        
+        .testimonials-section {
+            background: linear-gradient(135deg, #efebe9 0%, #d7ccc8 100%);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 45px;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            position: relative;
+            border-left: 5px solid #a1887f;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 5em;
+            color: #e8e0db;
+            font-family: Georgia, serif;
+        }
+        
+        .testimonial-text {
+            font-size: 1.1em;
+            color: #5d4037;
+            margin-bottom: 25px;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: #4e342e;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.05em;
+        }
+        
+        .testimonial-project {
+            color: #999;
+            font-size: 0.95em;
+            margin-top: 5px;
+            font-family: 'Lato', sans-serif;
+        }
+        
+        .contact-section {
+            background: white;
+        }
+        
+        .contact-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #f8f6f3;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #5d4037;
+            font-weight: 600;
+            font-size: 1.05em;
+            font-family: 'Lato', sans-serif;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #e8e0db;
+            border-radius: 5px;
+            color: #3d3d3d;
+            font-size: 1em;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #a1887f;
+            box-shadow: 0 0 0 3px rgba(161,136,127,0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #a1887f 0%, #8d6e63 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.15em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Lato', sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(141,110,99,0.4);
+        }
+        
+        footer {
+            background: #4e342e;
+            color: #bcaaa4;
+            text-align: center;
+            padding: 40px 0;
+            font-family: 'Lato', sans-serif;
+        }
+        
+        @media (max-width: 968px) {
+            header h1 { font-size: 3em; }
+            h2 { font-size: 2.5em; }
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+            nav ul { flex-direction: column; align-items: center; }
+        }
+        
+        @media (max-width: 600px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .contact-form { padding: 35px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Ольга Белова</h1>
+            <p>Дизайнер интерьера</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">Обо мне</a></li>
+            <li><a href="#portfolio">Портфолио</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#testimonials">Отзывы</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+    </nav>
+
+    <section id="about">
+        <div class="container">
+            <h2>Обо мне</h2>
+            <div class="about-content">
+                <p>Я создаю интерьеры, которые отражают индивидуальность их владельцев. Для меня дизайн — это не просто красивая картинка, а пространство, в котором хочется жить, где каждая деталь продумана и наполнена смыслом.</p>
+                
+                <p>С 2015 года реализовала более 50 проектов — от квартир до загородных домов. Моя философия — создание гармоничных, функциональных и уютных пространств, где современные решения сочетаются с вечными ценностями комфорта и красоты.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <div class="container">
+            <h2>Портфолио</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <span>🏠</span>
+                    <div class="portfolio-label">Квартира 120 м², Москва</div>
+                </div>
+                <div class="portfolio-item">
+                    <span>🛋️</span>
+                    <div class="portfolio-label">Загородный дом, Подмосковье</div>
+                </div>
+                <div class="portfolio-item">
+                    <span>🍽️</span>
+                    <div class="portfolio-label">Ресторан премиум-класса</div>
+                </div>
+                <div class="portfolio-item">
+                    <span>💼</span>
+                    <div class="portfolio-label">Офис IT-компании</div>
+                </div>
+                <div class="portfolio-item">
+                    <span>🌿</span>
+                    <div class="portfolio-label">SPA-салон</div>
+                </div>
+                <div class="portfolio-item">
+                    <span>🎨</span>
+                    <div class="portfolio-label">Арт-галерея</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services-section">
+        <div class="container">
+            <h2>Услуги</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">📐</div>
+                    <h3>Дизайн-проект</h3>
+                    <p>Полный комплект чертежей, 3D-визуализации, подбор материалов и мебели. Готовое решение для реализации.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🎯</div>
+                    <h3>Авторский надзор</h3>
+                    <p>Контроль выполнения работ на объекте, соответствие проекту, решение возникающих вопросов с подрядчиками.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🪑</div>
+                    <h3>Комплектация</h3>
+                    <p>Полный подбор и заказ мебели, текстиля, освещения и декора. Экономия вашего времени и бюджета.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">✨</div>
+                    <h3>Декорирование</h3>
+                    <p>Финальные штрихи интерьера. Расстановка мебели, декор, текстиль. Создание уюта и атмосферы.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <h2>Отзывы клиентов</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Ольга создала для нас дом мечты! Каждая деталь продумана, всё функционально и невероятно красиво. Спасибо за профессионализм и внимание к нашим пожеланиям.</p>
+                    <p class="testimonial-author">Семья Соколовых</p>
+                    <p class="testimonial-project">Загородный дом, 250 м²</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Работать с Ольгой — одно удовольствие. Она не только талантливый дизайнер, но и отличный организатор. Наша квартира стала именно такой, какой мы её представляли.</p>
+                    <p class="testimonial-author">Анна Михайлова</p>
+                    <p class="testimonial-project">Квартира, 95 м²</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Ольга разработала дизайн нашего ресторана. Гости в восторге от атмосферы! Проект был реализован точно в срок и в рамках бюджета. Рекомендуем!</p>
+                    <p class="testimonial-author">Владимир Петров</p>
+                    <p class="testimonial-project">Ресторан "Seasons"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Форма обратной связи</h2>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="project">Тип проекта</label>
+                    <input type="text" id="project" placeholder="Квартира, дом, офис...">
+                </div>
+                <div class="form-group">
+                    <label for="message">Расскажите о вашем проекте</label>
+                    <textarea id="message" rows="5" required></textarea>
+                </div>
+                <button type="submit">Отправить заявку</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>📍 Москва | 📞 +7 (495) 123-45-67 | 📧 olga.belova@design.ru</p>
+            <p style="margin-top: 15px;">&copy; 2026 Ольга Белова. Создаю интерьеры с душой.</p>
+        </div>
+    </footer>
+</body>
+</html>

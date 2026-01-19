@@ -1,0 +1,401 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Алексей Морозов - Веб-дизайнер</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 60px 0;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 3px solid #00d4ff;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d4ff, #ff00ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px #00d4ff); }
+            to { filter: drop-shadow(0 0 20px #ff00ea); }
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: #aaa;
+            letter-spacing: 3px;
+        }
+        
+        nav {
+            background: rgba(0,0,0,0.5);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 25px;
+            margin: 5px;
+            border-radius: 25px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        nav a:hover {
+            background: linear-gradient(45deg, #00d4ff, #ff00ea);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,212,255,0.4);
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        h2 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4ff, #ff00ea);
+            border-radius: 2px;
+        }
+        
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .work-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .work-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00d4ff;
+            box-shadow: 0 15px 40px rgba(0,212,255,0.3);
+        }
+        
+        .work-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .work-image:nth-child(2n) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .work-image:nth-child(3n) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .work-info {
+            padding: 25px;
+        }
+        
+        .work-info h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+        
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #ccc;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .service-card {
+            background: rgba(255,255,255,0.05);
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid rgba(0,212,255,0.2);
+        }
+        
+        .service-card:hover {
+            background: rgba(0,212,255,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .service-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid rgba(0,212,255,0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(0,212,255,0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #00d4ff, #ff00ea);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.4);
+        }
+        
+        footer {
+            background: rgba(0,0,0,0.5);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 80px;
+            border-top: 2px solid #00d4ff;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            .works-grid { grid-template-columns: 1fr; }
+            nav ul { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Алексей Морозов</h1>
+            <p class="subtitle">ВЕБ-ДИЗАЙНЕР & UI/UX СПЕЦИАЛИСТ</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#works">Работы</a></li>
+            <li><a href="#about">Обо мне</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+    </nav>
+
+    <section id="works">
+        <div class="container">
+            <h2>Мои работы</h2>
+            <div class="works-grid">
+                <div class="work-item">
+                    <div class="work-image">🎨</div>
+                    <div class="work-info">
+                        <h3>E-commerce платформа</h3>
+                        <p>Современный интернет-магазин с интуитивным интерфейсом</p>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">📱</div>
+                    <div class="work-info">
+                        <h3>Мобильное приложение</h3>
+                        <p>Дизайн приложения для фитнес-трекинга</p>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">💼</div>
+                    <div class="work-info">
+                        <h3>Корпоративный сайт</h3>
+                        <p>Элегантный сайт для финансовой компании</p>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">🎭</div>
+                    <div class="work-info">
+                        <h3>Креативное портфолио</h3>
+                        <p>Портфолио для художника с уникальной анимацией</p>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">🚀</div>
+                    <div class="work-info">
+                        <h3>Стартап лендинг</h3>
+                        <p>Яркая посадочная страница для IT-стартапа</p>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">🎪</div>
+                    <div class="work-info">
+                        <h3>Развлекательный портал</h3>
+                        <p>Интерактивный сайт для организации мероприятий</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>Обо мне</h2>
+            <div class="about-content">
+                <p>Привет! Я Алексей, веб-дизайнер с 7-летним опытом создания уникальных цифровых решений. Специализируюсь на разработке современных интерфейсов, которые не только красиво выглядят, но и решают бизнес-задачи клиентов.</p>
+                <p>Мой подход — сочетание креативности, внимания к деталям и глубокого понимания потребностей пользователей. Каждый проект для меня — это возможность создать нечто особенное.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="container">
+            <h2>Услуги</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🎨</div>
+                    <h3>UI/UX Дизайн</h3>
+                    <p>Проектирование пользовательских интерфейсов с фокусом на удобство</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Веб-дизайн</h3>
+                    <p>Создание адаптивных и современных веб-сайтов</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3>Мобильный дизайн</h3>
+                    <p>Дизайн приложений для iOS и Android</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎭</div>
+                    <h3>Брендинг</h3>
+                    <p>Разработка фирменного стиля и визуальной идентичности</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Контакты</h2>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Сообщение</label>
+                    <textarea id="message" rows="5" required></textarea>
+                </div>
+                <button type="submit">Отправить сообщение</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Алексей Морозов. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,510 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarbonShield — Калькулятор углеродного налога для экспортёров</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --color-primary: #10b981;
+            --color-primary-dark: #059669;
+            --color-accent: #3b82f6;
+            --color-background: #0f1419;
+            --color-surface: #1a1f26;
+            --font-primary: 'Montserrat', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            background: var(--color-background);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 60px rgba(16, 185, 129, 0.5);
+        }
+        
+        .btn-ghost {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 38px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .btn-ghost:hover {
+            border-color: var(--color-primary);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .card-3d {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .animate-scroll {
+            animation: scroll 25s linear infinite;
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            max-height: 600px;
+        }
+        
+        .hero-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(16, 185, 129, 0.4);
+            border-radius: 50%;
+            animation: float-particle 20s infinite;
+        }
+        
+        @keyframes float-particle {
+            0%, 100% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(100px, -800px);
+                opacity: 0;
+            }
+        }
+        
+        .calculator-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            color: white;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .calculator-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+            border: 2px solid var(--color-primary);
+            border-radius: 16px;
+            padding: 24px;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="glass fixed w-full top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center">
+                        <i data-lucide="leaf" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">CarbonShield</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#calculator" class="text-gray-300 hover:text-white transition">Калькулятор</a>
+                    <a href="#regulations" class="text-gray-300 hover:text-white transition">Регуляции</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-white transition">Тарифы</a>
+                    <a href="#contact" class="btn-primary inline-block">Демо-доступ</a>
+                </div>
+                
+                <button class="md:hidden text-white">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 px-6">
+        <div class="hero-particles">
+            <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+            <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+            <div class="particle" style="left: 70%; animation-delay: 1s;"></div>
+            <div class="particle" style="left: 90%; animation-delay: 3s;"></div>
+        </div>
+        
+        <div class="container mx-auto text-center relative z-10">
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-block glass px-6 py-2 rounded-full mb-6">
+                    <span class="text-green-400 font-semibold">✓ CBAM-регуляции ЕС 2026</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Рассчитайте углеродный налог<br/>
+                    <span class="gradient-text">за 2 минуты</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                    Автоматизированная платформа для расчета CBAM-платежей при экспорте в ЕС. Избегайте штрафов до €50 за тонну CO₂
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="btn-primary" onclick="document.getElementById('calculator').scrollIntoView({behavior: 'smooth'})">
+                        Попробовать калькулятор
+                    </button>
+                    <button class="btn-ghost">Скачать whitepaper</button>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">2,400+</div>
+                        <div class="text-gray-400 text-sm">Компаний-экспортёров</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">€18M</div>
+                        <div class="text-gray-400 text-sm">Сэкономленных налогов</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">27</div>
+                        <div class="text-gray-400 text-sm">Стран покрытия</div>
+                    </div>
+                    <div class="glass rounded-2xl p-6">
+                        <div class="text-4xl font-bold gradient-text mb-2">99.7%</div>
+                        <div class="text-gray-400 text-sm">Точность расчётов</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Logos -->
+    <section class="py-16 px-6">
+        <div class="container mx-auto">
+            <p class="text-center text-gray-400 mb-8 text-sm uppercase tracking-wider">Сертифицировано и одобрено</p>
+            <div class="flex space-x-12 justify-center items-center flex-wrap gap-8 opacity-60">
+                <div class="text-2xl font-bold">EU Commission</div>
+                <div class="text-2xl font-bold">ISO 14064</div>
+                <div class="text-2xl font-bold">GHG Protocol</div>
+                <div class="text-2xl font-bold">CBAM Registry</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Calculator Section -->
+    <section id="calculator" class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Калькулятор <span class="gradient-text">CBAM-налога</span></h2>
+                    <p class="text-xl text-gray-400">Введите данные вашего экспорта для мгновенного расчёта</p>
+                </div>
+                
+                <div class="glass rounded-3xl p-8 md:p-12">
+                    <div class="grid md:grid-cols-2 gap-8 mb-8">
+                        <!-- Input 1 -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Тип товара</label>
+                            <select id="productType" class="calculator-input">
+                                <option value="cement">Цемент (0.85 tCO₂/t)</option>
+                                <option value="steel">Сталь (1.85 tCO₂/t)</option>
+                                <option value="aluminum">Алюминий (8.2 tCO₂/t)</option>
+                                <option value="fertilizer">Удобрения (2.5 tCO₂/t)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Input 2 -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Объём экспорта (тонн)</label>
+                            <input type="number" id="exportVolume" class="calculator-input" placeholder="1000" value="1000">
+                        </div>
+                        
+                        <!-- Input 3 -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Страна назначения</label>
+                            <select id="destinationCountry" class="calculator-input">
+                                <option value="germany">Германия</option>
+                                <option value="france">Франция</option>
+                                <option value="netherlands">Нидерланды</option>
+                                <option value="poland">Польша</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Input 4 -->
+                        <div>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Цена CBAM (€/tCO₂)</label>
+                            <input type="number" id="cbamPrice" class="calculator-input" placeholder="80" value="80">
+                        </div>
+                    </div>
+                    
+                    <button onclick="calculateCBAM()" class="btn-primary w-full text-lg py-5">
+                        <i data-lucide="calculator" class="w-5 h-5 inline mr-2"></i>
+                        Рассчитать налог
+                    </button>
+                    
+                    <!-- Results -->
+                    <div id="calculatorResults" class="hidden mt-8 result-box">
+                        <div class="grid md:grid-cols-3 gap-6 mb-6">
+                            <div>
+                                <div class="text-sm text-gray-300 mb-2">Общие выбросы CO₂</div>
+                                <div id="totalEmissions" class="text-3xl font-bold text-green-400">-</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-300 mb-2">Налог CBAM</div>
+                                <div id="cbamTax" class="text-3xl font-bold text-blue-400">-</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-300 mb-2">Годовая стоимость</div>
+                                <div id="annualCost" class="text-3xl font-bold text-red-400">-</div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass rounded-xl p-6 border-l-4 border-green-500">
+                            <div class="flex items-start gap-4">
+                                <i data-lucide="lightbulb" class="w-6 h-6 text-green-400 flex-shrink-0 mt-1"></i>
+                                <div>
+                                    <div class="font-semibold mb-2 text-green-400">Рекомендация по оптимизации</div>
+                                    <p class="text-sm text-gray-300">Переход на возобновляемую энергию может снизить углеродный след на 40-60%, что сэкономит до <span id="savingsAmount" class="font-bold text-green-400">-</span> в год.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8 text-sm text-gray-400">
+                    <i data-lucide="shield-check" class="w-4 h-4 inline mr-2"></i>
+                    Данные защищены по стандарту ISO 27001. Расчёты соответствуют методологии EU ETS
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Возможности <span class="gradient-text">платформы</span></h2>
+                <p class="text-xl text-gray-400">Комплексное решение для управления углеродной отчётностью</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center mb-6">
+                        <i data-lucide="trending-down" class="w-7 h-7 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Автоматический мониторинг</h3>
+                    <p class="text-gray-400 mb-6">Отслеживание цен на углеродные сертификаты в реальном времени по 12 биржам. API-интеграция с вашей ERP-системой</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Алерты при изменении ставок</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Прогнозы на квартал</li>
+                    </ul>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center mb-6">
+                        <i data-lucide="file-text" class="w-7 h-7 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Генерация отчётности</h3>
+                    <p class="text-gray-400 mb-6">Автоматическое формирование квартальных CBAM-деклараций в формате XML для EU CBAM Registry</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Соответствие EU Regulation 2023/956</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Электронная подпись</li>
+                    </ul>
+                </div>
+                
+                <div class="glass rounded-2xl p-8 card-3d">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center mb-6">
+                        <i data-lucide="users" class="w-7 h-7 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Экспертная поддержка</h3>
+                    <p class="text-gray-400 mb-6">Команда сертифицированных carbon accountants с опытом более 500 проектов для разработки стратегии декарбонизации</p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Консультации 24/7</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 mr-2 text-green-400"></i> Аудит углеродного следа</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Что говорят <span class="gradient-text">клиенты</span></h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Игорь Петров</div>
+                            <div class="text-sm text-gray-400">CFO, MetalExport LLC</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-300">"Платформа сэкономила нам €340,000 за первый год. Автоматизация отчётности уменьшила время подготовки декларации с 3 недель до 2 часов. Must-have для любого экспортёра в ЕС"</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Елена Воронина</div>
+                            <div class="text-sm text-gray-400">Sustainability Director, ChemProm</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-300">"Прогнозирование цен на CO₂ позволило хеджировать риски на €1.2M. Точность модели — 94%. Команда поддержки решает любые вопросы за считанные часы"</p>
+                </div>
+                
+                <div class="glass rounded-2xl p-8">
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop" class="w-14 h-14 rounded-full mr-4">
+                        <div>
+                            <div class="font-bold">Андрей Козлов</div>
+                            <div class="text-sm text-gray-400">CEO, GreenSteel Group</div>
+                        </div>
+                    </div>
+                    <div class="flex mb-4">
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                        <i data-lucide="star" class="w-5 h-5 text-yellow-400 fill-current"></i>
+                    </div>
+                    <p class="text-gray-300">"Благодаря рекомендациям по декарбонизации мы снизили углеродный след на 47% и получили конкурентное преимущество. ROI платформы составил 680% за 18 месяцев"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-24 px-6">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Частые <span class="gradient-text">вопросы</span></h2>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="glass rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion(0)" class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/5 transition">
+                        <span class="font-semibold text-lg">Что такое CBAM и кого он затрагивает?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon-0"></i>
+                    </button>
+                    <div class="accordion-content px-8 pb-6">
+                        <p class="text-gray-400">CBAM (Carbon Border Adjustment Mechanism) — углеродный пограничный налог ЕС, который с 2026 года обязывает импортёров платить за углеродный след товаров из стран без углеродного регулирования. Затрагивает 6 секторов: цемент, сталь, алюминий, удобрения, электроэнергию и водород.</p>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion(1)" class="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/5 transition">
+                        <span class="font-semibold text-lg">Как рассчитывается стоимость налога?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform accordion-icon-1"></i>
+                    </button>
+                    <div class="accordion-content px-8 pb-6">
+                        <p class="text-gray-400">Налог = (Углеродный след товара в tCO₂) × (Цена сертификата EU ETS в €/tCO₂) × (Объём экспорта). Например: 1000 тонн стали (1.85 tCO₂/t) × €80/tCO₂ = €148,000 налога. Наша платформа автоматизирует этот расчёт с учётом всех нюансов методологии.</p>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-2xl overflow-hidden">
+                    <button onclick="toggleAccordion(2)" class="w-full px-8 py-6 text-left flex items-center

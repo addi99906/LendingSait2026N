@@ -1,0 +1,477 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinSphere AI 2026 - Умный Финансовый Портал | Кредиты, Ипотека, Займы</title>
+    <meta name="description" content="Инновационная платформа для подбора кредитов, ипотеки, займов и финансовых услуг с ИИ-анализом. 10 направлений финансирования в одном месте.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cyber-blue': '#00f0ff',
+                        'cyber-gold': '#ffd700',
+                        'glass-dark': 'rgba(15, 23, 42, 0.7)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles & Animations -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Glassmorphism effects */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        /* Gradient background */
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        
+        /* Neon glow effects */
+        .neon-blue {
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+        }
+        
+        .neon-gold {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        /* Smooth animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 240, 255, 0.6); }
+        }
+        
+        /* Hover effects */
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 240, 255, 0.3);
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00f0ff, #ffd700);
+            border-radius: 5px;
+        }
+    </style>
+    
+    <!-- JSON-LD Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FinancialService",
+        "name": "FinSphere AI 2026",
+        "description": "Инновационный финансовый портал с AI-анализом для подбора кредитов, ипотеки и займов",
+        "url": "https://finsphere.ai",
+        "serviceType": [
+            "Mortgage Broking", 
+            "Loan Service", 
+            "Credit Card Service",
+            "Business Loan",
+            "Cryptocurrency Lending"
+        ],
+        "areaServed": "RU",
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Финансовые услуги",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "LoanOrCredit",
+                        "name": "AI-Ипотека",
+                        "description": "Интеллектуальный подбор ипотеки с учетом господдержки 2026"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "LoanOrCredit",
+                        "name": "Crypto-Lend",
+                        "description": "Займы под залог криптовалюты"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "LoanOrCredit",
+                        "name": "Auto-Zaim",
+                        "description": "Автокредиты с динамическим расчетом КАСКО"
+                    }
+                }
+            ]
+        }
+    }
+    </script>
+</head>
+<body class="text-white">
+    
+    <!-- Main App Container -->
+    <div x-data="finSphereApp()" x-init="init()">
+        
+        <!-- Header with Navigation -->
+        <header class="glass sticky top-0 z-50 border-b border-white/10">
+            <nav class="container mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-cyber-blue to-cyber-gold rounded-lg flex items-center justify-center neon-blue">
+                            <i data-lucide="sparkles" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold bg-gradient-to-r from-cyber-blue to-cyber-gold bg-clip-text text-transparent">FinSphere AI</h1>
+                            <p class="text-xs text-gray-400">Enterprise Edition 2026</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hidden md:flex items-center space-x-6">
+                        <button @click="activeSection = 'services'" class="hover:text-cyber-blue transition">Услуги</button>
+                        <button @click="activeSection = 'about'" class="hover:text-cyber-blue transition">О платформе</button>
+                        <button @click="showChat = true" class="px-6 py-2 bg-gradient-to-r from-cyber-blue to-blue-600 rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition">
+                            AI-Консультант
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="container mx-auto px-6 py-16 text-center">
+            <div class="fade-in">
+                <h2 class="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-cyber-blue via-purple-400 to-cyber-gold bg-clip-text text-transparent">
+                    Будущее Финансов Уже Здесь
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                    Искусственный интеллект анализирует 10 000+ предложений от 200+ банков и МФО в режиме реального времени. 
+                    Найдите идеальное решение за 60 секунд.
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <button @click="activeService = 'mortgage'" class="px-8 py-4 bg-gradient-to-r from-cyber-blue to-blue-600 rounded-lg font-bold text-lg neon-blue hover:scale-105 transition">
+                        Запустить AI-Подбор
+                    </button>
+                    <button class="px-8 py-4 glass-card rounded-lg font-bold text-lg hover:scale-105 transition">
+                        Смотреть Demo
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Live Dashboard -->
+            <div class="mt-12 glass-card rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="activity" class="w-5 h-5 text-cyber-blue"></i>
+                        <h3 class="text-lg font-bold">Активность в реальном времени</h3>
+                    </div>
+                    <span class="flex items-center space-x-2">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        <span class="text-sm text-gray-400">Онлайн: <span x-text="liveStats.online"></span></span>
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="glass p-4 rounded-lg">
+                        <p class="text-sm text-gray-400">Одобрено сегодня</p>
+                        <p class="text-3xl font-bold text-cyber-blue" x-text="liveStats.approved"></p>
+                    </div>
+                    <div class="glass p-4 rounded-lg">
+                        <p class="text-sm text-gray-400">Средняя сумма</p>
+                        <p class="text-3xl font-bold text-cyber-gold" x-text="liveStats.avgAmount + ' ₽'"></p>
+                    </div>
+                    <div class="glass p-4 rounded-lg">
+                        <p class="text-sm text-gray-400">Время обработки</p>
+                        <p class="text-3xl font-bold text-green-400" x-text="liveStats.avgTime + ' мин'"></p>
+                    </div>
+                </div>
+                
+                <!-- Live Feed -->
+                <div class="mt-4 space-y-2 max-h-40 overflow-y-auto">
+                    <template x-for="item in liveFeed" :key="item.id">
+                        <div class="flex items-center justify-between p-3 glass rounded-lg text-sm">
+                            <div class="flex items-center space-x-3">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
+                                <span x-text="item.text"></span>
+                            </div>
+                            <span class="text-gray-500 text-xs" x-text="item.time"></span>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 10 Services Grid -->
+        <section class="container mx-auto px-6 py-16">
+            <h2 class="text-4xl font-bold text-center mb-12">
+                <span class="bg-gradient-to-r from-cyber-blue to-cyber-gold bg-clip-text text-transparent">10 Направлений</span>
+                Финансовых Решений
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- 1. AI-Mortgage -->
+                <div @click="activeService = 'mortgage'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="home" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold">ТОП-1</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">AI-Ипотека</h3>
+                    <p class="text-gray-400 text-sm mb-4">Интеллектуальный подбор с учетом господдержки 2026. Ставки от 0.1% при господдержке.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-cyber-blue font-bold">От 0.1% годовых</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 2. Crypto-Lend -->
+                <div @click="activeService = 'crypto'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-orange-500 to-yellow-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="bitcoin" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-xs font-bold">HOT</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Crypto-Lend</h3>
+                    <p class="text-gray-400 text-sm mb-4">Займы под залог BTC, ETH, USDT. Без проверки кредитной истории. Выдача за 15 минут.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-cyber-gold font-bold">До 70% от залога</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 3. Auto-Zaim -->
+                <div @click="activeService = 'auto'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-pink-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="car" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs font-bold">NEW</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Auto-Zaim</h3>
+                    <p class="text-gray-400 text-sm mb-4">Автокредиты с динамическим расчетом КАСКО. AI подбирает оптимальное страхование.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-red-400 font-bold">От 3.9% годовых</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 4. Business-Boost -->
+                <div @click="activeService = 'business'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="briefcase" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs font-bold">ИП</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Business-Boost</h3>
+                    <p class="text-gray-400 text-sm mb-4">Кредиты для бизнеса с AI-анализом вероятности одобрения. Решение за 2 часа.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-purple-400 font-bold">До 30 млн ₽</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 5. Refinance-Pro -->
+                <div @click="activeService = 'refinance'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="refresh-cw" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold">-40%</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Refinance-Pro</h3>
+                    <p class="text-gray-400 text-sm mb-4">Перекредитование с экономией до 40%. Калькулятор показывает точную выгоду.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-green-400 font-bold">Экономия до 500k ₽</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 6. Micro-Flash -->
+                <div @click="activeService = 'micro'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-yellow-500 to-amber-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="zap" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs font-bold">FAST</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Micro-Flash</h3>
+                    <p class="text-gray-400 text-sm mb-4">Мгновенные займы до зарплаты. Одобрение за 3 минуты, деньги на карту за 5 минут.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-yellow-400 font-bold">До 100 000 ₽</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 7. Card-Master -->
+                <div @click="activeService = 'cards'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="credit-card" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-pink-500/20 text-pink-400 rounded-full text-xs font-bold">100+</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Card-Master</h3>
+                    <p class="text-gray-400 text-sm mb-4">Кредитные карты с кэшбэком до 30% и грейс-периодом 100+ дней. Сравнение 500+ карт.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-pink-400 font-bold">Кэшбэк до 30%</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 8. Tax-Helper -->
+                <div @click="activeService = 'tax'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="calculator" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-teal-500/20 text-teal-400 rounded-full text-xs font-bold">AI</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Tax-Helper</h3>
+                    <p class="text-gray-400 text-sm mb-4">AI-консультант по налоговым вычетам. Автоматический расчет возврата 13% за ипотеку.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-teal-400 font-bold">Возврат до 650k ₽</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 9. Credit-Health -->
+                <div @click="activeService = 'health'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-blue-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="heart-pulse" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-indigo-500/20 text-indigo-400 rounded-full text-xs font-bold">FREE</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Credit-Health</h3>
+                    <p class="text-gray-400 text-sm mb-4">Проверка кредитного рейтинга с AI-рекомендациями по улучшению. Бесплатный мониторинг.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-indigo-400 font-bold">Проверить рейтинг</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- 10. Student-Fund -->
+                <div @click="activeService = 'student'" class="service-card glass-card rounded-2xl p-6 cursor-pointer">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-violet-500 to-purple-400 rounded-xl flex items-center justify-center">
+                            <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+                        </div>
+                        <span class="px-3 py-1 bg-violet-500/20 text-violet-400 rounded-full text-xs font-bold">EDU</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Student-Fund</h3>
+                    <p class="text-gray-400 text-sm mb-4">Образовательные кредиты с отсрочкой платежа. Льготные условия для студентов.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-violet-400 font-bold">От 3% годовых</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Service Detail Modal -->
+        <div x-show="activeService" x-cloak class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" @click.self="activeService = null">
+            <div class="glass-card rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-3xl font-bold" x-text="getServiceData().title"></h3>
+                    <button @click="activeService = null" class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/10">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <p class="text-gray-300 text-lg" x-text="getServiceData().description"></p>
+                    
+                    <!-- Calculator -->
+                    <div class="glass p-6 rounded-2xl">
+                        <h4 class="text-xl font-bold mb-4 flex items-center">
+                            <i data-lucide="calculator" class="w-5 h-5 mr-2 text-cyber-blue"></i>
+                            AI-Калькулятор
+                        </h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Сумма</label>
+                                <input type="number" x-model="calculator.amount" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:border-cyber-blue focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Срок (месяцев)</label>
+                                <input type="number" x-model="calculator.term" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 focus:border-cyber-blue focus:outline-none">
+                            </div>
+                        </div>
+                        
+                        <button @click="calculateLoan()" class="w-full py-4 bg-gradient-to-r from-cyber-blue to-blue-600 rounded-lg font-bold neon-blue hover:scale-105 transition">
+                            Рассчитать с помощью AI
+                        </button>
+                        
+                        <div x-show="calculator.result" class="mt-6 grid grid-cols-2 gap-4">
+                            <div class="glass p-4 rounded-lg">
+                                <p class="text-sm text-gray-400">Ежемесячный платеж</p>
+                                <p class="text-2xl font-bold text-cyber-blue" x-text="calculator.monthlyPayment + ' ₽'"></p>
+                            </div>
+                            <div class="glass p-4 rounded-lg">
+                                <p class="text-sm text-gray-400">Переплата</p>
+                                <p class="text-2xl font-bold text-cyber-gold" x-text="calculator.overpayment + ' ₽'"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Analysis -->
+                    <div class="glass p-6 rounded-2xl">
+                        <h4 class="text

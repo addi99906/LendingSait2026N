@@ -1,0 +1,553 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CryptoX - Профессиональная криптовалютная биржа. Торгуйте Bitcoin, Ethereum и другими криптовалютами с минимальными комиссиями.">
+    <title>CryptoX - Профессиональная Криптобиржа | Торговля Bitcoin, Ethereum</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'crypto-blue': '#3B82F6',
+                        'crypto-green': '#10B981',
+                        'crypto-red': '#EF4444',
+                        'crypto-dark': '#0F172A',
+                        'crypto-card': '#1E293B',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles -->
+    <style>
+        /* ====================
+           GLOBAL STYLES
+        ==================== */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+            color: #F8FAFC;
+            overflow-x: hidden;
+        }
+        
+        /* ====================
+           ANIMATIONS
+        ==================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes priceFlash {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(16, 185, 129, 0.2); }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.6s ease-out forwards;
+        }
+        
+        /* ====================
+           CUSTOM COMPONENTS
+        ==================== */
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+        }
+        
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 2px;
+            background: linear-gradient(135deg, #3B82F6, #10B981);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            border-radius: inherit;
+        }
+        
+        .price-up {
+            color: #10B981;
+        }
+        
+        .price-down {
+            color: #EF4444;
+        }
+        
+        .price-flash {
+            animation: priceFlash 0.5s ease;
+        }
+        
+        /* ====================
+           RESPONSIVE UTILITIES
+        ==================== */
+        @media (max-width: 768px) {
+            .mobile-menu {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .mobile-menu.active {
+                transform: translateX(0);
+            }
+        }
+        
+        /* ====================
+           SCROLLBAR STYLING
+        ==================== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3B82F6, #10B981);
+            border-radius: 4px;
+        }
+        
+        /* ====================
+           CHART CONTAINER
+        ==================== */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .chart-line {
+            stroke: #3B82F6;
+            stroke-width: 2;
+            fill: none;
+        }
+        
+        /* ====================
+           UTILITIES
+        ==================== */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- ====================
+         HEADER & NAVIGATION
+    ==================== -->
+    <header class="sticky top-0 z-50 glass-effect">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-crypto-blue to-crypto-green rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-crypto-blue to-crypto-green bg-clip-text text-transparent">CryptoX</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#markets" class="text-gray-300 hover:text-white transition">Рынки</a>
+                    <a href="#trading" class="text-gray-300 hover:text-white transition">Торговля</a>
+                    <a href="#wallet" class="text-gray-300 hover:text-white transition">Кошелек</a>
+                    <a href="#about" class="text-gray-300 hover:text-white transition">О платформе</a>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <button onclick="showModal('login')" class="px-6 py-2 text-white hover:bg-white/10 rounded-lg transition">Вход</button>
+                    <button onclick="showModal('register')" class="px-6 py-2 bg-gradient-to-r from-crypto-blue to-crypto-green text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition">
+                        Регистрация
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 left-0 w-64 h-full bg-crypto-card z-40 md:hidden p-6">
+        <div class="flex flex-col space-y-6">
+            <a href="#markets" class="text-gray-300 hover:text-white transition">Рынки</a>
+            <a href="#trading" class="text-gray-300 hover:text-white transition">Торговля</a>
+            <a href="#wallet" class="text-gray-300 hover:text-white transition">Кошелек</a>
+            <a href="#about" class="text-gray-300 hover:text-white transition">О платформе</a>
+            <button onclick="showModal('login')" class="px-6 py-2 text-white bg-white/10 rounded-lg transition text-left">Вход</button>
+            <button onclick="showModal('register')" class="px-6 py-2 bg-gradient-to-r from-crypto-blue to-crypto-green text-white rounded-lg font-semibold">Регистрация</button>
+        </div>
+    </div>
+    
+    <!-- ====================
+         HERO SECTION
+    ==================== -->
+    <section class="container mx-auto px-4 py-16 md:py-24">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <!-- Left Content -->
+            <div class="fade-in-up">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    Торгуйте криптовалютой
+                    <span class="bg-gradient-to-r from-crypto-blue to-crypto-green bg-clip-text text-transparent">
+                        профессионально
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-300 mb-8">
+                    Надежная платформа для торговли Bitcoin, Ethereum и 200+ криптовалют. 
+                    Минимальные комиссии 0.1%, моментальный вывод средств, профессиональные инструменты анализа.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="showModal('register')" class="px-8 py-4 bg-gradient-to-r from-crypto-blue to-crypto-green text-white rounded-lg font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/50 transition">
+                        Начать торговать
+                    </button>
+                    <button onclick="scrollToSection('markets')" class="px-8 py-4 border border-gray-600 text-white rounded-lg font-bold text-lg hover:bg-white/5 transition">
+                        Посмотреть рынки
+                    </button>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-6 mt-12">
+                    <div>
+                        <p class="text-3xl font-bold text-crypto-green">$2.4B</p>
+                        <p class="text-sm text-gray-400">Объем за 24ч</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-crypto-blue">250K+</p>
+                        <p class="text-sm text-gray-400">Пользователей</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-yellow-500">200+</p>
+                        <p class="text-sm text-gray-400">Криптовалют</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Content - Live Trading Card -->
+            <div class="slide-in-right">
+                <div class="glass-effect rounded-2xl p-6 hover-lift">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold">Популярные пары</h3>
+                        <span class="flex items-center space-x-2">
+                            <span class="w-2 h-2 bg-crypto-green rounded-full animate-pulse"></span>
+                            <span class="text-sm text-gray-400">Live</span>
+                        </span>
+                    </div>
+                    
+                    <!-- Price List -->
+                    <div id="priceList" class="space-y-4">
+                        <!-- Prices will be inserted here by JavaScript -->
+                    </div>
+                    
+                    <!-- Mini Chart -->
+                    <div class="mt-6 chart-container bg-crypto-dark/50 rounded-lg p-4">
+                        <canvas id="miniChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ====================
+         MARKETS SECTION
+    ==================== -->
+    <section id="markets" class="container mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4">Криптовалютные рынки</h2>
+            <p class="text-gray-400 text-lg">Отслеживайте цены в реальном времени и начните торговать прямо сейчас</p>
+        </div>
+        
+        <!-- Market Filters -->
+        <div class="flex flex-wrap gap-4 mb-8 justify-center">
+            <button onclick="filterMarket('all')" class="px-6 py-2 bg-crypto-blue text-white rounded-lg font-semibold">Все</button>
+            <button onclick="filterMarket('gainers')" class="px-6 py-2 bg-white/5 text-white rounded-lg hover:bg-white/10 transition">Растущие</button>
+            <button onclick="filterMarket('losers')" class="px-6 py-2 bg-white/5 text-white rounded-lg hover:bg-white/10 transition">Падающие</button>
+            <button onclick="filterMarket('defi')" class="px-6 py-2 bg-white/5 text-white rounded-lg hover:bg-white/10 transition">DeFi</button>
+        </div>
+        
+        <!-- Markets Table -->
+        <div class="glass-effect rounded-2xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-white/5">
+                        <tr class="text-left text-sm text-gray-400">
+                            <th class="px-6 py-4">#</th>
+                            <th class="px-6 py-4">Название</th>
+                            <th class="px-6 py-4">Цена</th>
+                            <th class="px-6 py-4">24ч %</th>
+                            <th class="px-6 py-4">Объем 24ч</th>
+                            <th class="px-6 py-4">Рын. кап.</th>
+                            <th class="px-6 py-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="marketsTable" class="text-sm">
+                        <!-- Markets will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ====================
+         TRADING SECTION
+    ==================== -->
+    <section id="trading" class="container mx-auto px-4 py-16">
+        <div class="glass-effect rounded-2xl p-8">
+            <h2 class="text-3xl font-bold mb-8">Торговый терминал</h2>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Order Book -->
+                <div class="lg:col-span-1">
+                    <h3 class="text-xl font-bold mb-4">Книга ордеров</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Цена (USDT)</span>
+                            <span class="text-gray-400">Количество</span>
+                        </div>
+                        <div id="orderBook" class="space-y-1 max-h-96 overflow-y-auto">
+                            <!-- Order book will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Trading Form -->
+                <div class="lg:col-span-2">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Buy Form -->
+                        <div class="bg-crypto-dark/50 rounded-xl p-6">
+                            <h4 class="text-xl font-bold text-crypto-green mb-6">Купить BTC</h4>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Цена</label>
+                                    <input type="number" id="buyPrice" placeholder="45,000" class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-crypto-green focus:outline-none">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Количество (BTC)</label>
+                                    <input type="number" id="buyAmount" placeholder="0.001" class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-crypto-green focus:outline-none">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Сумма (USDT)</label>
+                                    <input type="number" id="buyTotal" placeholder="45.00" class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-crypto-green focus:outline-none">
+                                </div>
+                                
+                                <div class="flex gap-2">
+                                    <button onclick="setPercentage('buy', 25)" class="flex-1 py-2 bg-white/5 rounded hover:bg-white/10 transition text-sm">25%</button>
+                                    <button onclick="setPercentage('buy', 50)" class="flex-1 py-2 bg-white/5 rounded hover:bg-white/10 transition text-sm">50%</button>
+                                    <button onclick="setPercentage('buy', 75)" class="flex-1 py-2 bg-white/5 rounded hover:bg-white/10 transition text-sm">75%</button>
+                                    <button onclick="setPercentage('buy', 100)" class="flex-1 py-2 bg-white/5 rounded hover:bg-white/10 transition text-sm">100%</button>
+                                </div>
+                                
+                                <button onclick="executeTrade('buy')" class="w-full py-4 bg-crypto-green text-white rounded-lg font-bold hover:bg-green-600 transition">
+                                    Купить BTC
+                                </button>
+                                
+                                <p class="text-xs text-gray-400 text-center">Комиссия: 0.1%</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Sell Form -->
+                        <div class="bg-crypto-dark/50 rounded-xl p-6">
+                            <h4 class="text-xl font-bold text-crypto-red mb-6">Продать BTC</h4>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Цена</label>
+                                    <input type="number" id="sellPrice" placeholder="45,000" class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-crypto-red focus:outline-none">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Количество (BTC)</label>
+                                    <input type="number" id="sellAmount" placeholder="0.001" class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-crypto-red focus:outline-none">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Сумма (USDT)</label>
+                                    <input type="number" id="sellTotal" placeholder="45.00" class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-crypto-red focus:outline-none">
+                                </div>
+                                
+                                <div class="flex gap-2">
+                                    <button onclick="setPercentage('sell', 25)" class="flex-1 py-2 bg-white/5 rounded hover:bg-white/10 transition text-sm">25%</button>
+                                    <button onclick="setPercentage('sell', 50)" class="flex-1 py-2 bg-white/5 rounded hover:bg-white/10 transition text-sm">50%</button>
+                                    <button onclick="setPercentage('sell', 75)" class="flex-1 py-2 bg-white/5 rounded hover:bg-white/10 transition text-sm">75%</button>
+                                    <button onclick="setPercentage('sell', 100)" class="flex-1 py-2 bg-white/5 rounded hover:bg-white/10 transition text-sm">100%</button>
+                                </div>
+                                
+                                <button onclick="executeTrade('sell')" class="w-full py-4 bg-crypto-red text-white rounded-lg font-bold hover:bg-red-600 transition">
+                                    Продать BTC
+                                </button>
+                                
+                                <p class="text-xs text-gray-400 text-center">Комиссия: 0.1%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ====================
+         FEATURES SECTION
+    ==================== -->
+    <section class="container mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4">Почему выбирают CryptoX</h2>
+            <p class="text-gray-400 text-lg">Профессиональная платформа с лучшими условиями на рынке</p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="glass-effect rounded-2xl p-8 hover-lift">
+                <div class="w-16 h-16 bg-gradient-to-br from-crypto-blue to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Безопасность</h3>
+                <p class="text-gray-400">
+                    95% средств хранятся в холодных кошельках. Двухфакторная аутентификация, 
+                    шифрование данных по стандарту банковской безопасности.
+                </p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="glass-effect rounded-2xl p-8 hover-lift">
+                <div class="w-16 h-16 bg-gradient-to-br from-crypto-green to-green-600 rounded-xl flex items-center justify-center mb-6">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Низкие комиссии</h3>
+                <p class="text-gray-400">
+                    Торговая комиссия всего 0.1%. Без скрытых платежей. 
+                    Дополнительные скидки до 50% при оплате комиссии нашим токеном.
+                </p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="glass-effect rounded-2xl p-8 hover-lift">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Быстрые выводы</h3>
+                <p class="text-gray-400">
+                    Вывод средств обрабатывается мгновенно. Поддержка 50+ способов пополнения и вывода. 
+                    Работаем 24/7 без выходных.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ====================
+         FOOTER
+    ==================== -->
+    <footer class="border-t border-gray-800 mt-16">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-crypto-blue to-crypto-green rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold">CryptoX</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Профессиональная криптовалютная биржа для трейдеров по всему миру.
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-bold mb-4">Продукты</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Спотовая торговля</a></li>
+                        <li><a href="#" class="hover:text-white transition">Маржинальная торговля</a></li>
+                        <li><a href="#" class="hover:text-white transition">Фьючерсы</a></li>
+                        <li><a href="#" class="hover:text-white transition">Стейкинг</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Support -->
+                <div>
+                    <h4 class="font-bold mb-4">Поддержка</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Центр помощи</a></li>
+                        <li><a href="#" class="hover:text-white transition">API документация</a></li>
+                        <li><a href="#" class="hover:text-white transition">Комиссии</a></li>
+                        <li><a href="#" class="hover:text-white transition">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Social -->
+                <div>
+                    <h4 class="font-bold mb-4">Мы в соцсетях</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-white/10 transition">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22
